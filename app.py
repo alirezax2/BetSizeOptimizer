@@ -6,9 +6,10 @@ import hvplot as hv
 import panel as pn
 import hvplot.pandas
 
-hv.extension('bokeh')
+pn.extension('bokeh', template='bootstrap')
 
 def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, max_rounds, max_profit , num_realization):
+  hv.extension('bokeh')
 
   bet = lambda cash: cash * betsize
 
