@@ -44,7 +44,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
-             intial bet {betsize*initialcapital/100}$
+             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk} and possible reward/loss={riskpercent/100*betsize*initialcapital/100}
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
@@ -52,17 +52,15 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
     alert_type="success"
   return pn.Column(plot1, pn.pane.Alert(text, alert_type=alert_type, height=150, width=1200, sizing_mode="fixed"))
 
-
 initialcapital = pn.widgets.IntSlider(name='Initial Capital', start=1000, end=100000, step=1000, value=2000)
 bet_chance = pn.widgets.FloatSlider(name='Win Rate %', start=0, end=100, step=0.1, value=60.0)
 betsize = pn.widgets.FloatSlider(name='Bet Size %', start=0, end=100.0, step=1, value=50)
-rewardrisk = pn.widgets.FloatSlider(name='Reward Risk', start=0, end=10, step=1, value=1.0)
-riskpercent = pn.widgets.FloatSlider(name='risk %', start=0, end=100.0, step=1, value=100.0)
+rewardrisk = pn.widgets.FloatSlider(name='Reward:Risk', start=0, end=0.1, step=1, value=1.0)
+riskpercent = pn.widgets.FloatSlider(name='Risk %', start=0, end=100.0, step=1, value=100.0)
 max_rounds = pn.widgets.IntSlider(name='Max Rounds', start=1000, end=10000, step=1000, value=1000)
 max_profit = pn.widgets.IntSlider(name='Max Profit', start=10000, end=10000000, step=1000, value=1000000)
 num_realization = pn.widgets.IntSlider(name='Number of Realization', start=100, end=10000, step=100, value=100)
 selectedmethod = pn.widgets.Select(name='Select Method', value='Mean', options=['Full Kelly Criterion' , 'Half Kelly Criterion' , 'Fractional Kelly Criterion','Constant Proportion Betting','Martingale Betting System'])
-
 
 bound_plot = pn.bind(simulate, initialcapital= initialcapital, bet_chance =bet_chance , betsize=betsize , rewardrisk=rewardrisk, riskpercent=riskpercent, max_rounds=max_rounds, max_profit=max_profit , num_realization=num_realization)
 
