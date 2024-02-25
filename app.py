@@ -59,10 +59,10 @@ riskpercent = pn.widgets.FloatSlider(name='risk percent', start=0, end=1.0, step
 max_rounds = pn.widgets.IntSlider(name='Max Rounds', start=1000, end=10000, step=1000, value=1000)
 max_profit = pn.widgets.IntSlider(name='Max Profit', start=10000, end=10000000, step=1000, value=1000000)
 num_realization = pn.widgets.IntSlider(name='Number of Realization', start=100, end=10000, step=100, value=100)
-# selectedmethod = pn.widgets.Select(name='Select Method', value='Mean', options=['Mean' , 'Min' , 'Max'])
+selectedmethod = pn.widgets.Select(name='Select Method', value='Mean', options=['Full Kelly Criterion' , 'Half Kelly Criterion' , 'Fractional Kelly Criterion','Constant Proportion Betting','Martingale Betting System'])
 
 
 bound_plot = pn.bind(simulate, initialcapital= initialcapital, bet_chance =bet_chance , betsize=betsize , rewardrisk=rewardrisk, riskpercent=riskpercent, max_rounds=max_rounds, max_profit=max_profit , num_realization=num_realization)
 
-pn.Row(pn.Column(initialcapital, bet_chance, betsize, rewardrisk, riskpercent, max_rounds, max_profit, num_realization),bound_plot).servable(title="Bet Size Optimizer - Simulation Account Growth")
+pn.Row(pn.Column(initialcapital, bet_chance, betsize, rewardrisk, riskpercent, max_rounds, max_profit, num_realization,selectedmethod),bound_plot).servable(title="Bet Size Optimizer - Simulation Account Growth")
 
