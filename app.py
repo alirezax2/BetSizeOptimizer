@@ -26,9 +26,9 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
 
           bet_value = bet(cash)
           if np.random.rand() < (bet_chance/100):
-              cash += bet_value *rewardrisk * riskpercent #*.1
+              cash += bet_value *rewardrisk * (riskpercent/100) #*.1
           else:
-              cash -= bet_value *riskpercent #* .05
+              cash -= bet_value *(riskpercent/100) #* .05
 
           profits.append(cash)
 
@@ -44,6 +44,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
+             intial bet {betsize*initialcapital/100}$
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
@@ -53,10 +54,10 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
 
 
 initialcapital = pn.widgets.IntSlider(name='Initial Capital', start=1000, end=100000, step=1000, value=2000)
-bet_chance = pn.widgets.FloatSlider(name='Win Rate', start=0, end=100, step=0.1, value=60.0)
-betsize = pn.widgets.FloatSlider(name='Bet Size', start=0, end=100.0, step=1, value=50)
+bet_chance = pn.widgets.FloatSlider(name='Win Rate %', start=0, end=100, step=0.1, value=60.0)
+betsize = pn.widgets.FloatSlider(name='Bet Size %', start=0, end=100.0, step=1, value=50)
 rewardrisk = pn.widgets.FloatSlider(name='Reward Risk', start=0, end=10, step=1, value=1.0)
-riskpercent = pn.widgets.FloatSlider(name='risk percent', start=0, end=1.0, step=0.1, value=1.0)
+riskpercent = pn.widgets.FloatSlider(name='risk %', start=0, end=100.0, step=1, value=100.0)
 max_rounds = pn.widgets.IntSlider(name='Max Rounds', start=1000, end=10000, step=1000, value=1000)
 max_profit = pn.widgets.IntSlider(name='Max Profit', start=10000, end=10000000, step=1000, value=1000000)
 num_realization = pn.widgets.IntSlider(name='Number of Realization', start=100, end=10000, step=100, value=100)
