@@ -38,7 +38,8 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
 
   bust = [ x for x in all_profits if x[-1] <= 1 ]
   rich = [ x for x in all_profits if x[-1] >= max_profit ]
-  text = f"""Blowout: {round(len(bust) / len(all_profits) * 100)} %
+  text = f"""### Result of Simulation:
+             Blowout: {round(len(bust) / len(all_profits) * 100)} %
              Avg time to go Blowout: {np.mean([ len(x) for x in bust ]):.1f}
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
