@@ -12,13 +12,13 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
   hv.extension('bokeh')
   if selectedmethod=='Full Kelly Criterion':
     #   betsize = 2 * bet_chance-100
-    betsize = (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk)
+    betsize = 100 * ((bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk))
   elif selectedmethod== 'Half Kelly Criterion':
     #   betsize = 0.5 * ( 2*bet_chance-100)
-    betsize = 0.5* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) )
+    betsize = 100*( 0.5* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) ) )
   elif selectedmethod=='Fractional Kelly Criterion':
     #   betsize = 0.25 * (2*bet_chance-100)
-    betsize = 0.25* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) )
+    betsize = 100* ( 0.25* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) ) )
 
   bet = lambda cash: cash * (betsize/100)
 
@@ -53,7 +53,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
-             intial bet {betsize*initialcapital/100:.1f}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100:.1f}$ and betsize = {100*betsize:.1f}%
+             intial bet {betsize*initialcapital/100:.1f}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100:.1f}$ and betsize = {betsize:.1f}%
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
