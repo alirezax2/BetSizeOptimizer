@@ -11,34 +11,37 @@ pn.extension('bokeh', template='bootstrap')
 def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, max_rounds, max_profit, num_realization, selectedmethod):
   hv.extension('bokeh')
   if selectedmethod=='Full Kelly Criterion':
-      betsize = 2 * bet_chance-100
+    #   betsize = 2 * bet_chance-100
+    betsize = bet_chance - ( (1-bet_chance)/rewardrisk)
   elif selectedmethod== 'Half Kelly Criterion':
-      betsize = 0.5 * ( 2*bet_chance-100)
+    #   betsize = 0.5 * ( 2*bet_chance-100)
+    betsize = 0.5* ( bet_chance - ( (1-bet_chance)/rewardrisk) )
   elif selectedmethod=='Fractional Kelly Criterion':
-      betsize = 0.25 * (2*bet_chance-100)
+    #   betsize = 0.25 * (2*bet_chance-100)
+    betsize = 0.25 * ( bet_chance - ( (1-bet_chance)/rewardrisk) )
       
   bet = lambda cash: cash * (betsize/100)
 
   all_profits = []
   for i in range(0, num_realization):
-      profits = []
-      cash = initialcapital
-      for i in range(0, max_rounds):
-          if cash <= 1: # went blowout
-              break
+    profits = []
+    cash = initialcapital
+    for i in range(0, max_rounds):
+        if cash <= 1: # went blowout
+            break
 
-          if cash >= max_profit:
-              break
+        if cash >= max_profit:
+            break
 
-          bet_value = bet(cash)
-          if np.random.rand() < (bet_chance/100):
-              cash += bet_value *rewardrisk * (riskpercent/100) #*.1
-          else:
-              cash -= bet_value *(riskpercent/100) #* .05
+        bet_value = bet(cash)
+        if np.random.rand() < (bet_chance/100):
+            cash += bet_value *rewardrisk * (riskpercent/100) #*.1
+        else:
+            cash -= bet_value *(riskpercent/100) #* .05
 
-          profits.append(cash)
+        profits.append(cash)
 
-      all_profits.append(profits)
+    all_profits.append(profits)
   df = pd.DataFrame(all_profits).T
   plot1 =  df.hvplot.line( logy=True, height=600, width=1200).opts(show_grid=True, ylabel='Profit', xlabel='Bet')
 
@@ -50,7 +53,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
-             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100}$ and betsize = betsize %
+             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100}$ and betsize = {betsize}%
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
