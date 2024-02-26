@@ -12,13 +12,13 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
   hv.extension('bokeh')
   if selectedmethod=='Full Kelly Criterion':
     #   betsize = 2 * bet_chance-100
-    betsize = bet_chance - ( (1-bet_chance)/rewardrisk)
+    betsize = (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk)
   elif selectedmethod== 'Half Kelly Criterion':
     #   betsize = 0.5 * ( 2*bet_chance-100)
-    betsize = 0.5* ( bet_chance - ( (1-bet_chance)/rewardrisk) )
+    betsize = 0.5* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) )
   elif selectedmethod=='Fractional Kelly Criterion':
     #   betsize = 0.25 * (2*bet_chance-100)
-    betsize = 0.25 * ( bet_chance - ( (1-bet_chance)/rewardrisk) )
+    betsize = 0.25* ( (bet_chance/100) - ( (1-(bet_chance/100))/rewardrisk) )
       
   bet = lambda cash: cash * (betsize/100)
 
