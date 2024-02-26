@@ -8,9 +8,15 @@ import hvplot.pandas
 
 pn.extension('bokeh', template='bootstrap')
 
-def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, max_rounds, max_profit , num_realization):
+def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, max_rounds, max_profit, num_realization, selectedmethod):
   hv.extension('bokeh')
-
+  if selectedmethod=='Full Kelly Criterion':
+      betsize = 2 * bet_chance-100
+  elif selectedmethod== 'Half Kelly Criterion':
+      betsize = 0.5 * ( 2*bet_chance-100)
+  elif selectedmethod=='Fractional Kelly Criterion':
+      betsize = 0.25 * (2*bet_chance-100)
+      
   bet = lambda cash: cash * (betsize/100)
 
   all_profits = []
@@ -44,7 +50,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
-             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk} and possible reward/loss={riskpercent/100*betsize*initialcapital/100}
+             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100}$ and betsize = betsize %
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
@@ -60,9 +66,9 @@ riskpercent = pn.widgets.FloatSlider(name='Risk %', start=0, end=100.0, step=1, 
 max_rounds = pn.widgets.IntSlider(name='Max Rounds', start=1000, end=10000, step=1000, value=1000)
 max_profit = pn.widgets.IntSlider(name='Max Profit', start=10000, end=10000000, step=1000, value=1000000)
 num_realization = pn.widgets.IntSlider(name='Number of Realization', start=100, end=10000, step=100, value=100)
-selectedmethod = pn.widgets.Select(name='Select Method', value='Mean', options=['Full Kelly Criterion' , 'Half Kelly Criterion' , 'Fractional Kelly Criterion','Constant Proportion Betting','Martingale Betting System'])
+selectedmethod = pn.widgets.Select(name='Select Method', value='Mean', options=['Full Kelly Criterion' , 'Half Kelly Criterion' , 'Fractional Kelly Criterion','Constant Proportion Betting'])
 
-bound_plot = pn.bind(simulate, initialcapital= initialcapital, bet_chance =bet_chance , betsize=betsize , rewardrisk=rewardrisk, riskpercent=riskpercent, max_rounds=max_rounds, max_profit=max_profit , num_realization=num_realization)
+bound_plot = pn.bind(simulate, initialcapital= initialcapital, bet_chance =bet_chance , betsize=betsize , rewardrisk=rewardrisk, riskpercent=riskpercent, max_rounds=max_rounds, max_profit=max_profit , num_realization=num_realization,selectedmethod=selectedmethod)
 
 pn.Row(pn.Column(initialcapital, bet_chance, betsize, rewardrisk, riskpercent, max_rounds, max_profit, num_realization,selectedmethod),bound_plot).servable(title="Bet Size Optimizer - Simulation Account Growth")
 
