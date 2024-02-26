@@ -53,7 +53,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
              Reach Max profit: {round(len(rich) / len(all_profits) * 100):.1f} %
              Avg time to reach max profit:, {np.mean([ len(x) for x in rich ]):.1f}
              Challenge from {initialcapital}$ to {max_profit}$
-             intial bet {betsize*initialcapital/100}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100}$ and betsize = {betsize}%
+             intial bet {betsize*initialcapital/100:.1f}$ with winrate={bet_chance}% reward to risk={rewardrisk}:1 and possible reward/loss={riskpercent/100*betsize*initialcapital/100:.1f}$ and betsize = {100*betsize:.1f}%
           """
   if round(len(bust) / len(all_profits)) > .5:
     alert_type="danger"
