@@ -3,6 +3,7 @@ import numpy as np
 import math
 
 import hvplot as hv
+import holoviews as hvs
 import panel as pn
 import hvplot.pandas
 
@@ -43,7 +44,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
 
     all_profits.append(profits)
   df = pd.DataFrame(all_profits).T
-  plot1 =  df.hvplot.line( logy=True, height=600, width=1200).opts(show_grid=True, ylabel='Profit', xlabel='Bet')
+  plot1 =  df.hvplot.line( logy=True, height=600, width=1200).opts(show_grid=True, ylabel='Profit', xlabel='Bet') * hvs.Hline(max_profit)
 
   bust = [ x for x in all_profits if x[-1] <= 1 ]
   rich = [ x for x in all_profits if x[-1] >= max_profit ]
