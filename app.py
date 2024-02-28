@@ -44,7 +44,7 @@ def simulate(initialcapital , bet_chance , betsize , rewardrisk, riskpercent, ma
 
     all_profits.append(profits)
   df = pd.DataFrame(all_profits).T
-  plot1 =  df.hvplot.line( logy=True, height=600, width=1200).opts(show_grid=True, ylabel='Profit', xlabel='Bet') * hvs.Hline(max_profit)
+  plot1 =  df.hvplot.line( logy=True, height=600, width=1200).opts(show_grid=True, ylabel='Profit', xlabel='Bet') * hvs.HLine(max_profit)
 
   bust = [ x for x in all_profits if x[-1] <= 1 ]
   rich = [ x for x in all_profits if x[-1] >= max_profit ]
